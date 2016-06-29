@@ -1,0 +1,14 @@
+body {
+		background-color: gray;
+		margin: 10px 20px;
+	}
+#svgParticle {
+	width: 800px;
+	margin: 0 auto;
+}
+.centerText {
+	text-align: center;
+	color: white;
+	font-family: "Helvetica", "Arial", "sans-serif";
+	font-size: 1.2em;
+}
