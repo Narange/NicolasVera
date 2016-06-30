@@ -6,9 +6,13 @@ body {
 	width: 800px;
 	margin: 0 auto;
 }
-.centerText {
+.centerH2 {
 	text-align: center;
 	color: white;
 	font-family: "Helvetica", "Arial", "sans-serif";
-	font-size: 1.2em;
+}
+.centerP {
+	text-align: center;
+	color: white;
+	font-family: "Helvetica", "Arial", "sans-serif";
 }

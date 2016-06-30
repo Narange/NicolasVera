@@ -11,7 +11,19 @@
 
 <body>
 
-	<p class="centerText">Square Particles</p>
+	<h2 class="centerH2">Particles</h2>
+	<p class="centerP">Mouse over or touch and swipe</p>
+
+	<div id="particleOptions">
+
+		<select id="shapeSelect">
+			<option value="circle">Circles</option>
+			<option value="rect">Squares</option>
+		</select>
+
+		<input id="colorSelect" type="color" value="#ff0000">
+
+	</div>
 
 	<div id="svgParticle"></div>
 	<script>
@@ -31,22 +43,45 @@
 
 	function particle() {
 		var mouseCoords = d3.mouse(this);
+		var shape = d3.select("#shapeSelect").property("value");
+		var color = d3.select("#colorSelect").property("value");
 
-		svg.insert("circle")
-			.attr("cx", mouseCoords[0])
-			.attr("cy", mouseCoords[1])
-			.attr("r", .01)
-			.style("stroke", "red")
-			.style("stroke-width", 2)
-			.style("stroke-opacity", 1)
-			.style("fill", "none")
-			.transition()
-				.duration(2500)
-				.ease(Math.sqrt)
-				.attr("r", 150)
-				.style("stroke-opacity", .01)
-				.remove();
+		if (shape == "circle"){
 
+			svg.insert("circle")
+				.attr("cx", mouseCoords[0])
+				.attr("cy", mouseCoords[1])
+				.attr("r", .01)
+				.style("stroke", color)
+				.style("stroke-width", 2)
+				.style("stroke-opacity", 1)
+				.style("fill", "none")
+				.transition()
+					.duration(2500)
+					.ease(Math.sqrt)
+					.attr("r", 150)
+					.style("stroke-opacity", .01)
+					.remove();
+
+			} else if (shape == "rect") {
+
+				svg.insert("rect")
+				.attr("x", mouseCoords[0])
+				.attr("y", mouseCoords[1])
+				.attr("width", .01)
+				.attr("height", .01)
+				.style("stroke", color)
+				.style("stroke-width", 2)
+				.style("stroke-opacity", 1)
+				.style("fill", "none")
+				.transition()
+					.duration(2500)
+					.ease(Math.sqrt)
+					.attr("width", 150)
+					.attr("height", 150)
+					.style("stroke-opacity", .01)
+					.remove();
+			}
 			d3.event.preventDefault();
 	}
 
