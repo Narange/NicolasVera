@@ -6,6 +6,12 @@ body {
 	width: 800px;
 	margin: 0 auto;
 }
+#particleOptions{
+	width:800px;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 7px;
+}
 .centerH2 {
 	text-align: center;
 	color: white;
