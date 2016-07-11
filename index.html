@@ -22,6 +22,7 @@
 		</select>
 
 		<input id="colorSelect" type="color" value="#ff0000">
+		<input id="colorRandom" type="checkbox" value="random">Random color
 
 	</div>
 
@@ -30,11 +31,11 @@
 
 	var width = 800, height = 400;
 
-	var svg = d3.select("#svgParticle").append("svg")
+	var svgParticle = d3.select("#svgParticle").append("svg")
 		.attr("width", width)
 		.attr("height", height);
 
-	svg.append("rect")
+	svgParticle.append("rect")
 		.attr("width", width)
 		.attr("height", height)
 		.attr("fill", "#BBBBBB")
@@ -44,11 +45,19 @@
 	function particle() {
 		var mouseCoords = d3.mouse(this);
 		var shape = d3.select("#shapeSelect").property("value");
-		var color = d3.select("#colorSelect").property("value");
+		var color;
+		if (d3.select("#colorRandom").property("checked")) {
+			var randomR = Math.random()*255;
+			var randomG = Math.random()*255;
+			var randomB = Math.random()*255;
+			color = d3.rgb(randomR, randomG, randomB);
+		} else {
+			color = d3.select("#colorSelect").property("value");
+		}
 
 		if (shape == "circle"){
 
-			svg.insert("circle")
+			svgParticle.insert("circle")
 				.attr("cx", mouseCoords[0])
 				.attr("cy", mouseCoords[1])
 				.attr("r", .01)
@@ -65,7 +74,7 @@
 
 			} else if (shape == "rect") {
 
-				svg.insert("rect")
+				svgParticle.insert("rect")
 				.attr("x", mouseCoords[0])
 				.attr("y", mouseCoords[1])
 				.attr("width", .01)
@@ -84,6 +93,29 @@
 			}
 			d3.event.preventDefault();
 	}
+
+	</script>
+
+	<h2 class="centerH2">Node Graph</h2>
+	<p class="centerP">Node graph using force layout</p>
+
+	<div id="forceOptions">
+
+	</div>
+
+	<div id="svgForce"></div>
+	<script>
+
+	var width = 800, height = 400;
+
+	var svgForce = d3.select("#svgForce").append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	svgForce.append("rect")
+		.attr("width", width)
+		.attr("height", height)
+		.attr("fill", "#BBBBBB");
 
 	</script>
 

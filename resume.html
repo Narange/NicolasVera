@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title>Nicolas Vera</title>
+
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+	path {
+	  transition: fill 250ms linear;
+	  transition-delay: 150ms;
+	}
+	path:hover {
+	  transition-delay: 0;
+	}
+	</style>
+</head>
+
+<body>
+
+	<p class="centerP">Click on sections to expand</p>
+
+	<div id="svgResume"></div>
+	<script>
+
+	var width = 800, height = 500;
+
+	var svg = d3.select("#svgResume").append("svg")
+		.attr("width", width)
+		.attr("height", height);
+
+	svg.append("rect")
+		.attr("width", width)
+		.attr("height", height)
+		.attr("fill", "#FFFFF0");
+
+	var pi = Math.PI;
+	var innerRadius = 100, outerRadius = 250;
+
+	var arc1 = d3.svg.arc()
+		.innerRadius(innerRadius)
+		.outerRadius(outerRadius)
+		.startAngle(.5*pi)
+		.endAngle(.745*pi);
+
+	var arc2 = d3.svg.arc()
+		.innerRadius(innerRadius)
+		.outerRadius(outerRadius)
+		.startAngle(.755*pi)
+		.endAngle(.995*pi);
+
+	var arc3 = d3.svg.arc()
+		.innerRadius(innerRadius)
+		.outerRadius(outerRadius)
+		.startAngle(1.005*pi)
+		.endAngle(1.245*pi);
+
+	var arc4 = d3.svg.arc()
+		.innerRadius(innerRadius)
+		.outerRadius(outerRadius)
+		.startAngle(1.255*pi)
+		.endAngle(1.5*pi);
+
+	var colorArray = ["#086CA2", "#D8F800", "#9303A7", "#FFB800"];
+
+	[arc1, arc2, arc3, arc4].forEach(function(d, i) {
+		svg.append("path")
+		.attr("d", d)
+		.attr("transform", "translate(400, 5)")
+		.attr("fill", colorArray[i])
+		.on("mouseover", arcTween(outerRadius, 0))
+    	.on("mouseout", arcTween(outerRadius - 20, 150));
+	});
+
+	function arcTween(outerRadius, delay) {
+  		return function() {
+  			d3.select(this).transition().delay(delay).attrTween("d", function(d) {
+  				var i = d3.interpolate(d.outerRadius, outerRadius);
+  				return function(t) { d.outerRadius = i(t); return arc(d); };
+    });
+  };
+}
+
+	</script>
+
+</body>
+</html>

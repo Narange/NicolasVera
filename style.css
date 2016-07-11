@@ -1,17 +1,9 @@
 body {
-		background-color: gray;
+		background-color: #202020;
 		margin: 10px 20px;
+		color: white;
+		font-family: "Helvetica", "Arial", "sans-serif";
 	}
-#svgParticle {
-	width: 800px;
-	margin: 0 auto;
-}
-#particleOptions{
-	width:800px;
-	margin: 0 auto;
-	text-align: center;
-	padding-bottom: 7px;
-}
 .centerH2 {
 	text-align: center;
 	color: white;
@@ -22,3 +14,40 @@ body {
 	color: white;
 	font-family: "Helvetica", "Arial", "sans-serif";
 }
+
+#svgResume {
+	width: 800px;
+	margin: 0 auto;
+}
+
+#svgParticle {
+	width: 800px;
+	margin: 0 auto;
+}
+#particleOptions{
+	width:800px;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 7px;
+}
+
+#svgForce {
+	width: 800px;
+	margin: 0 auto;
+}
+#forceOptions{
+	width:800px;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 7px;
+}
+.node {
+    fill: #ccc;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+.link {
+    stroke: #777;
+    stroke-width: 2px;
+}
+
