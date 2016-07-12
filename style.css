@@ -10,18 +10,15 @@ a {
 a:hover {
 	color: white;
 }
-.centerH2 {
+.centerH2, .centerH3 {
 	text-align: center;
+	margin-bottom: 0;
 	color: white;
-	font-family: "Helvetica", "Arial", "sans-serif";
-}
-.centerH3 {
-	text-align: center;
-	color: white;
-	font-family: "Helvetica", "Arial", "sans-serif";
+	font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
 }
 .centerP {
 	text-align: center;
+	margin-top: 0;
 	color: white;
 	font-family: "Helvetica", "Arial", "sans-serif";
 }
