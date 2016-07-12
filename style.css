@@ -4,7 +4,18 @@ body {
 		color: white;
 		font-family: "Helvetica", "Arial", "sans-serif";
 	}
+a {
+	color: orange;
+}
+a:hover {
+	color: white;
+}
 .centerH2 {
+	text-align: center;
+	color: white;
+	font-family: "Helvetica", "Arial", "sans-serif";
+}
+.centerH3 {
 	text-align: center;
 	color: white;
 	font-family: "Helvetica", "Arial", "sans-serif";
@@ -41,13 +52,25 @@ body {
 	text-align: center;
 	padding-bottom: 7px;
 }
-.node {
+#svgForce .node {
     fill: #ccc;
     stroke: #fff;
     stroke-width: 2px;
 }
-.link {
+#svgForce .link {
     stroke: #777;
     stroke-width: 2px;
 }
 
+#svgLinReg {
+	width: 800px;
+	margin: 0 auto;
+}
+#svgLinReg .bar rect {
+	fill: #ccc;
+}
+#svgLinReg .brush .extent {
+	stroke: #fff;
+	fill-opacity: .125;
+	shape-rendering: crispEdges;
+}
