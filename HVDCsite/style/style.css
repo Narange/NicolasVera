@@ -1,0 +1,166 @@
+body {
+   background-color: white; 
+   font-family: Cambria, "Palatino Linotype", Serif;
+}
+
+#wrap {
+   width: 900px;
+   margin: 0 auto;
+   background-color: white;
+   max-height: 100%;
+}
+
+#content {
+   padding: 0 20px;
+   clear: left;
+}
+
+/* The _column classes have a max-width of 49% because
+   50% each made their edges kiss and increasing the padding 
+   increases the margin (?) for some reason and the 
+   right column gets pushed down one row. WHY. Idk. 
+   So 49% width was an easy fix and it looks as intended. */
+.left_column {
+   float: left;
+   width: 49%;
+   max-height: 100%;
+   margin: 0;
+   clear: left;
+   padding: 0 5px 0 0;
+}
+
+.right_column {
+   float: right;
+   width: 49%;
+   max-height: 100%;
+   margin: 0;
+   clear: right;
+   padding: 0 0 0 5px;
+}
+
+.right_column h2 {
+   margin: 0 auto;
+}
+
+/* The div underneath the left_ and right_columns. Clear: left to
+   put this class of div beneath the upper two columns.*/
+.bottom_column {
+   clear: left;
+   padding: 10px 0;
+}
+
+/* Begin photo gallery styling */
+.gallery {
+   clear: left;
+   padding: 30px 0;
+   width: 100%;
+}
+
+.gallery table {
+   width: 900px;
+   table-layout: fixed;
+}
+
+.gallery table td {
+   height: 300px;
+}
+
+.gallery table td img {
+   max-width: 100%;
+   max-height: 100%;
+}
+/* End photo gallery styling */
+
+#granola_bottom {
+   /* to make it one column on the left. Php file has <spans>s to make
+      prices float to the right */
+   max-width: 49%;
+}
+
+.bottom_column img {
+   display: block;
+   margin: 0 auto;
+}
+
+.gallery_image {
+
+}
+
+#phoneNumber{
+   color: white;
+   padding: 10px 35px 0;
+}
+
+#slideshow{
+   max-width: 100%;
+   margin: 0 auto;
+   opacity: 1;
+   transition: opacity .8s;
+}
+
+/* For the fade-in and -out effect */
+#slideshow.fadeOut {
+   opacity: 0;
+}
+
+/* The image that appears at the top left of the cookies, cakes, 
+   biscotti, and granola pages. */
+.topImage{
+   
+}
+
+#logo {
+   float: left;
+   width:30%;
+   margin: 10px 0;
+}
+
+#logo img{
+   max-width: 100%;
+   max-height: 100%;
+}
+
+#googlemap {
+   width: 100%;
+   height: 300px;
+}
+
+#biscotti_bottom {
+   clear: left;
+   margin: 0 auto;
+}
+
+#biscotti_bottom p{
+   text-align: center;
+}
+
+/* begin navbar style */
+#navbar {
+   width: 70%;
+   float: right;
+   margin: 101px 0 0 0;
+   padding: 0;
+   list-style: none;
+   background-color: rgb(151,22,70);
+   border-radius: 2px 10px 10px 2px;
+}
+
+#navbar li {
+   float: left;
+}
+
+#navbar li a {
+   display: block;
+   padding: 12px 10px;
+   text-decoration: none;
+   color: white;
+   border-right: 1px solid white;
+   font-family: "Century Gothic", AppleGothic, sans-serif;
+}
+
+#navbar li a:hover {
+   color: rgb(151,22,70);
+   background-color: #fff;
+}
+/* end navbar style */
+
