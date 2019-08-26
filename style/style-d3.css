@@ -1,0 +1,8 @@
+#svgLinReg .bar rect {
+    fill: #ccc;
+}
+#svgLinReg .brush .extent {
+    stroke: #fff;
+    fill-opacity: .125;
+    shape-rendering: crispEdges;
+}

@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Nicolas Vera</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Personal site of Nicolas Vera">
+        <meta  name="keywords" content="java javascript d3.js boston hello there person reading this">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        
+        <!-- Style for this page -->
+        <link rel="stylesheet" href="style/style-main.css">
+
+        <!-- Style for D3 elements -->
+        <link rel="stylesheet" href="style/style-d3.css">
+
+        <!-- W3.js for "include" functionality -->
+        <script src="https://www.w3schools.com/lib/w3.js"></script>
+
+        <!-- D3.js, library for data visualization-->
+        <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    </head>
+    <body>
+
+        <!--INCLUDE NAVBAR-->
+        <div w3-include-html="navbar.html"></div>
+
+        <!-- Main content -->
+        <div class="container">
+
+        <h2 class="text-center">D3 Gallery</h2>
+        <p class="text-center">A JS library for data visualization, or just visuals.</p>
+
+        <h4 class="text-center">Slinky</h4>
+        <p class="text-center">Mouse over or touch and swipe. Choose a shape and color.</p>
+
+
+        <div class="text-center">
+
+        <select id="shapeSelect">
+            <option value="circle">Circles</option>
+            <option value="rect">Squares</option>
+        </select>
+
+        <input id="colorSelect" type="color" value="#ff0000">
+        <input id="colorRandom" type="checkbox" value="random">Random colors
+
+        </div>
+    
+        <div id="svgParticle" class="text-center"></div>
+        <script>
+    
+        var width = 800, height = 400;
+    
+        var svgParticle = d3.select("#svgParticle").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    
+        svgParticle.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#BBBBBB")
+            .attr("pointer-events", "all")
+            .on("ontouchstart" in document?"touchmove":"mousemove", particle);
+    
+        function particle() {
+            var mouseCoords = d3.mouse(this);
+            var shape = d3.select("#shapeSelect").property("value");
+            var color;
+            if (d3.select("#colorRandom").property("checked")) {
+                var randomR = Math.random()*255;
+                var randomG = Math.random()*255;
+                var randomB = Math.random()*255;
+                color = d3.rgb(randomR, randomG, randomB);
+            } else {
+                color = d3.select("#colorSelect").property("value");
+            }
+    
+            if (shape == "circle"){
+    
+                svgParticle.insert("circle")
+                    .attr("cx", mouseCoords[0])
+                    .attr("cy", mouseCoords[1])
+                    .attr("r", .01)
+                    .style("stroke", color)
+                    .style("stroke-width", 2)
+                    .style("stroke-opacity", 1)
+                    .style("fill", "none")
+                    .transition()
+                        .duration(2500)
+                        .ease(Math.sqrt)
+                        .attr("r", 150)
+                        .style("stroke-opacity", .01)
+                        .remove();
+    
+                } else if (shape == "rect") {
+    
+                    svgParticle.insert("rect")
+                    .attr("x", mouseCoords[0])
+                    .attr("y", mouseCoords[1])
+                    .attr("width", .01)
+                    .attr("height", .01)
+                    .style("stroke", color)
+                    .style("stroke-width", 2)
+                    .style("stroke-opacity", 1)
+                    .style("fill", "none")
+                    .transition()
+                        .duration(2500)
+                        .ease(Math.sqrt)
+                        .attr("width", 150)
+                        .attr("height", 150)
+                        .style("stroke-opacity", .01)
+                        .remove();
+                }
+                d3.event.preventDefault();
+        }
+    
+        </script>
+
+
+        <h4 class="text-center">Node Graph Propagation</h4>
+        <p class="text-center">Node graph using "force" layout. Click "Sample" to generate (another) random graph.<br> Click "Propagate" to spread red nodes with probability 0.5.</p>
+
+        <div class="text-center" style="margin-bottom: 3px;">
+            <button id="sample">Sample</button>
+            <button id="propagate">Propagate</button>
+        </div>
+    
+        <div id="svgForce" class="text-center"></div>
+        <script>
+    
+        var width = 800, height = 400;
+    
+        var svgForce = d3.select("#svgForce").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    
+        svgForce.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#BBBBBB");
+    
+        var graph;
+    
+        function randomIndex(array) {
+            return Math.floor(Math.random() * array.length);
+        }
+    
+        function randomGraph(numNodes, numEdges) {
+            var graph = {
+                nodes: [],
+                links: []
+            };
+    
+            for (var i = 0; i < numNodes; i++) {
+                graph.nodes.push({ neighbors: [] });
+            }
+    
+            //pick random node pairs, connect them with a link, add to graph
+            for (var i = 0; i < numEdges; i++) {
+                var source = randomIndex(graph.nodes);
+                var target = randomIndex(graph.nodes);
+    
+                graph.nodes[source].neighbors.push(target);
+                graph.nodes[target].neighbors.push(source);
+    
+                graph.links.push({ source: source, target: target });
+            }
+    
+            return graph;
+        }
+    
+        function cycleGraph(numNodes) {
+            var graph = {
+                nodes: [],
+                links: []
+            };
+    
+            for (var i = 0; i < numNodes; i++) {
+                graph.nodes.push({ neighbors: [] });
+            }
+    
+            for (var source = 0; source < numNodes; source++) {
+                var target = (source + 1) % numNodes;
+    
+                graph.nodes[source].neighbors.push(target);
+                graph.nodes[target].neighbors.push(source);
+    
+                graph.links.push({ source: source, target: target });
+    
+                target = (source + 2) % numNodes;
+    
+                graph.nodes[source].neighbors.push(target);
+                graph.nodes[target].neighbors.push(source);
+    
+                graph.links.push({ source: source, target: target });
+    
+            }
+    
+            return graph;
+        }
+    
+        function smallWorld(numNodes, numRandomEdges) {
+            var graph = cycleGraph(numNodes);
+    
+            for (var i = 0; i < numRandomEdges; i++) {
+                var source = randomIndex(graph.nodes);
+                var target = randomIndex(graph.nodes);
+    
+                graph.nodes[source].neighbors.push(target);
+                graph.nodes[target].neighbors.push(source);
+    
+                graph.links.push({ source: source, target: target });
+            }
+    
+            return graph;
+        }
+    
+        function preferentialGraph(numNodes, numEdges, randomness) {
+            var graph = {
+                nodes: [],
+                links: []
+            };
+            for (var i = 0; i < numNodes; i++) {
+                graph.nodes.push({ neighbors: [] });
+            }
+            for (var i = 0; i < numEdges; i++) {
+                var source = randomIndex(graph.nodes);
+                var target;
+    
+                var randomProb = randomness / (randomness + graph.links.length);
+                if (Math.random() < randomProb) {
+                    target = randomIndex(graph.nodes);
+                } else {
+                    //copy target of another link
+                    target = graph.links[randomIndex(graph.links)].target;
+                }
+    
+                graph.nodes[source].neighbors.push(target);
+                graph.nodes[target].neighbors.push(source);
+    
+                graph.links.push({ source: source, target: target });
+            }
+    
+            return graph;
+        }
+    
+        //Finally, add graph to the svg element
+        var lines, circles;
+    
+        d3.select("#sample").on("click", function () {
+            graph = preferentialGraph(40, 40, 5);
+    
+            graph.nodes[randomIndex(graph.nodes)].infected = true;
+    
+            var force = d3.layout.force()
+                .size([width, height]);
+    
+            force.nodes(graph.nodes)
+                .links(graph.links)
+                .start();
+    
+                lines = svgForce.selectAll("line")
+                    .data(graph.links);
+    
+                lines.enter().append("line")
+                    .attr("class", "link")
+                    .attr("stroke", "black");
+    
+                circles = svgForce.selectAll("circle")
+                    .data(graph.nodes);
+    
+                circles.enter().append("circle")
+                    .attr("class", "node")
+                    .attr("stroke", "#fff")
+                    .attr("r", 5);
+    
+                circles.style("fill", function(d) {
+                    if (d.infected) { 
+                        return "red";
+                    } else {
+                        return "black";
+                    }
+                });
+    
+                circles.call(force.drag);
+    
+                force.on("tick", function() {
+                    lines.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+    
+                circles.attr("cx", function(d) { return d.x; })
+                    .attr("cy", function(d) { return d.y; });
+                });
+    
+        });
+    
+        d3.select("#propagate").on("click", function() {
+            var condemnedNodes = [];
+    
+            //If a node is near an infected one, it is likely to become infected
+            for (var i = 0; i < graph.nodes.length; i++) {
+                var node = graph.nodes[i];
+    
+                node.neighbors.forEach(function (neighbor) {
+                    if (graph.nodes[neighbor].infected && Math.random() < 0.5) {
+                        condemnedNodes.push(i);
+                    }
+                });
+            }
+    
+            condemnedNodes.forEach(function(nodeID) {
+                graph.nodes[nodeID].infected = true;
+            });
+    
+            //update display
+            circles.style("fill", function(d) {
+                if (d.infected) {
+                    return "red";
+                } else {
+                    return "black";
+                }
+            });
+        });
+    
+        </script>
+
+
+        <h4 class="text-center">Linear Regression</h4>
+        <p class="text-center">Move and resize the box to show line of regression for the contained points. You can also click and drag to draw a new box.<br>
+        Dataset of national statistics from college course:  <a href="res/usda-atlas-people.csv" download> Download spreadsheet</a><br>
+        In this case, X is related to % of population with college degrees and Y to population change rate (by county).</p>
+    
+        <div id="svgLinReg" class="text-center"></div>
+        <script>
+    
+        var usdaData;
+        var points;
+    
+        d3.csv("res/usda-atlas-people.csv", function(error, rows) {
+            usdaData = rows;
+    
+            points = rows.map(function(county) {
+                return {
+                    state: county.State, x: Number(county.Ed4CollegePlusPct0812), y: Number(county.PopChangeRate1013)
+                };
+            });
+    
+            var width = 800;
+            var height = 400;
+    
+            var svgLinReg = d3.select("#svgLinReg").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+    
+            svgLinReg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#BBBBBB");
+    
+            var xDomain = d3.extent(points, function(d) {
+                return d.x;
+            });
+            var yDomain = d3.extent(points, function(d) {
+                return d.y;
+            });
+    
+            var xScale = d3.scale.linear().domain(xDomain).range([0, width]);
+            var yScale = d3.scale.linear().domain(yDomain).range([height, 0]);
+    
+            var circles = svgLinReg.selectAll("circle").data(points).enter()
+                .append("circle")
+                .attr("cx", function(d) { return xScale(d.x); })
+                .attr("cy", function(d) { return yScale(d.y); })
+                .attr("r", 2)
+                .attr("opacity", "0.3");
+    
+            var currentExtent = [[100, 100], [width - 400, height - 100]];
+    
+            //Is the point in the current extent?
+            function inExtent(point) {
+                var mapX = xScale(point.x);
+                var mapY = yScale(point.y);
+    
+                return mapX > currentExtent[0][0] &&
+                mapX < currentExtent[1][0] &&
+                mapY > currentExtent[0][1] &&
+                mapY < currentExtent[1][1];
+            }
+    
+            //Calculate slope and intercept
+            function leastSquares() {
+                var model = {};
+    
+                //Filter points by the current extent
+                var activePoints = points.filter(inExtent);
+    
+                var meanX = d3.mean(activePoints, function(d) {
+                    return d.x;
+                });
+    
+                var meanY = d3.mean(activePoints, function(d) {
+                    return d.y;
+                });
+    
+                model.slope = d3.sum(activePoints, function (d) {
+                return (d.x - meanX) * (d.y - meanY);
+                });
+    
+                model.slope /= d3.sum(activePoints, function (d) {
+                    return (d.x - meanX) * (d.x - meanX);
+                });
+    
+                model.intercept = meanY - model.slope * meanX;
+    
+                return model;
+            }
+    
+            var model = leastSquares();
+    
+            var regressionLine = svgLinReg.append("line")
+                .attr("x1", xScale(xDomain[0]))
+                .attr("y1", yScale(model.slope * xDomain[0] + model.intercept))
+                .attr("x2", xScale(xDomain[1]))
+                .attr("y2", yScale(model.slope * xDomain[1] + model.intercept))
+                .style("stroke", "#993333");
+    
+            function moveLine() {
+                regressionLine
+                    .attr("y1", yScale(model.slope * xDomain[0] + model.intercept))
+                    .attr("y2", yScale(model.slope * xDomain[1] + model.intercept));
+            }
+    
+            var brush = d3.svg.brush()
+                .x(d3.scale.identity().domain([0, width]))
+                .y(d3.scale.identity().domain([0, height]))
+                .extent(currentExtent)
+                .on("brush", brushed);
+    
+            function brushed() {
+                currentExtent = brush.extent();
+                model = leastSquares();
+                moveLine();
+            }
+    
+            svgLinReg.append("g")
+                .attr("class", "brush")
+                .call(brush);
+    
+            brushed();
+    
+        });
+    
+        </script>
+
+        </div>
+
+        <!-- Libraries for responsive functionality: jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <!--w3.js include HTML-->
+        <script>
+            w3.includeHTML();
+        </script>
+    </body>
+</html>

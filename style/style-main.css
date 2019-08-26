@@ -1,0 +1,46 @@
+body {
+    color: white;
+    background-color: #202020;
+    font-family: Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif; 
+}
+
+h1, h2, h3, h4 {
+    font-family: Garamond,Baskerville,Baskerville Old Face,Hoefler Text,Times New Roman,serif;
+    margin: 15px 0 0 0;
+}
+
+a {
+    color: orange;
+}
+
+p {
+    margin-bottom: 0px;
+}
+
+.navbar {
+    background-color: black !important;
+    color: white;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar-nav {
+    text-align: center;
+}
+
+.nav-item {
+    margin: 0 10px 0 10px;
+}
+
+#footer {
+    background-color: black;
+    width: 100%;
+    padding: 0;
+    color: white;
+}
+
+#footer p {
+    margin: 0;
+}

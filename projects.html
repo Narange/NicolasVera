@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Nicolas Vera</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Personal site of Nicolas Vera">
+        <meta  name="keywords" content="java javascript d3.js boston hello there person reading this">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        
+        <!-- Style for this page -->
+        <link rel="stylesheet" href="style/style-main.css">
+
+        <!-- W3.js for "include" functionality -->
+        <script src="https://www.w3schools.com/lib/w3.js"></script>
+    </head>
+    <body>
+
+        <!--INCLUDE NAVBAR-->
+        <div w3-include-html="navbar.html"></div>
+
+        <!-- Main content -->
+        <div class="container">
+
+        <h2 class="text-center">Projects</h2>
+
+        <p class="text-center">
+            Visit my Github <a target="_blank" href="https://github.com/Narange">here</a><br>
+        </p>
+
+        <h4 class="text-center">Random Sentence Generator</h4>
+
+        <div class="text-center">
+
+            <form>
+            Suggestion: Copy/paste the "Plot" section from a movie's Wikipedia article.<br>
+            <textarea id="inputTextField" name="message" rows="10" cols="80">Enter text here from which to generate random sentences!</textarea>
+            <br>
+
+            <button id="buttonGenerate" type="button">Generate</button>
+            </form>
+
+        </div>
+    
+        <p id="resultText"></p>
+    
+        <script>
+        var myButton = document.getElementById("buttonGenerate");
+        var myInputTextField = document.getElementById("inputTextField");
+        myButton.onclick = generate;
+    
+        //Generates random sentence using unigram model (every word is random)
+        function randomSentenceUni(array, sentenceLength){
+            var sentence = "";
+    
+            for (i = 0; i < sentenceLength; i++){
+                var randomIndex = Math.floor(Math.random() * array.length);
+                sentence += " " + array[randomIndex];
+            }
+            console.log(sentence);
+        }
+    
+        //Generates random sentence using bigram model
+        function randomSentenceBi(array, sentenceLength){
+            var sentence = "";
+            //first random word
+            var randomIndex = Math.floor(Math.random() * array.length);
+            sentence += " " + array[randomIndex];
+    
+            var bigramArray = [];
+            for (i = 0; i < array.length - 1; i++){
+                bigramArray.push([array[i], array[i+1]]);
+            }
+    
+            //rest of sentence
+            for (i = 0; i < sentenceLength - 1; i++){
+                var matchingBigramArray = []; //array where first word matches
+                var lastIndexOfSpace = sentence.lastIndexOf(" ");
+                var previousWord = sentence.substring(lastIndexOfSpace + 1, sentence.length);
+    
+                for (j = 0; j < bigramArray.length; j++){
+                    if (bigramArray[j][0] == previousWord) {
+                        matchingBigramArray.push(bigramArray[j]);
+                    }
+                }
+                //matchingBigramArray now complete
+                //use it if it's not empty, else next word is random from array param
+                if (matchingBigramArray.length != 0) {
+                    var randomIndexBi = Math.floor(Math.random() * matchingBigramArray.length);
+                    sentence += " " + matchingBigramArray[randomIndexBi][1];
+                } else {
+                    var randomIndex = Math.floor(Math.random() * array.length);
+                    sentence += " " + array[randomIndex];
+                }
+            }
+            console.log(sentence);
+            return sentence;
+        }
+    
+        function generate() {
+            var inputText = myInputTextField.value;
+            var splitInputText = inputText.split(" ");
+            var finalSentence = randomSentenceBi(splitInputText, 100);
+            document.getElementById("resultText").innerHTML = finalSentence;
+        }
+    
+        </script>
+
+        </div>
+
+        <!-- Libraries for responsive functionality: jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <!--w3.js include HTML-->
+        <script>
+            w3.includeHTML();
+        </script>
+    </body>
+</html>
