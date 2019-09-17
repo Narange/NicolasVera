@@ -26,25 +26,26 @@
 
         <h2 class="text-center">Projects</h2>
 
-        <p class="text-center">
-            Visit my Github <a target="_blank" href="https://github.com/Narange">here</a><br>
-        </p>
-
         <h4 class="text-center">Random Sentence Generator</h4>
 
         <div class="text-center">
 
-            <form>
-            Suggestion: Copy/paste the "Plot" section from a movie's Wikipedia article.<br>
-            <textarea id="inputTextField" name="message" rows="10" cols="80">Enter text here from which to generate random sentences!</textarea>
-            <br>
+            <p>Suggestion: Copy/paste the "Plot" section from a movie's Wikipedia article.<br>
+            (Also find a <a href="https://github.com/Narange/Java-repo/tree/master/RandomSentenceGenerator" target="_blank">Java version</a> of this
+            in which the corpus is read from a text file.)
+            </p><br>
 
-            <button id="buttonGenerate" type="button">Generate</button>
+            <form>
+                <textarea id="inputTextField" name="message" rows="10" cols="80">Enter text here from which to generate random sentences!</textarea>
+                <br>
+
+                <button id="buttonGenerate" type="button">Generate</button>
             </form>
 
         </div>
     
-        <p id="resultText"></p>
+        <br>
+        <p id="resultText" class="text-center"></p>
     
         <script>
         var myButton = document.getElementById("buttonGenerate");
