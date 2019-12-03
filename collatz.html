@@ -23,11 +23,11 @@
         .tooltip {
           position: absolute;
           text-align: center;
-          width: 60px;
-          height: 12px;
+          width: 80px;
+          height: 16px;
           padding: 2px;
           font: 12px sans-serif;
-          background: lightblue;
+          background: red;
           border: 0px;
           border-radius: 8px;
           pointer-events: none;
@@ -87,7 +87,7 @@
 
             <p>
                 Using the D3.js library, we can plot the peaks and observe patterns emerge naturally.<br>
-                Here, values of n are 1 through 300:
+                Hover over a data point to see [n, peak]. Here, values of n are 1 through 300:
             </p>
             
                 </div>
@@ -177,15 +177,15 @@
                 .attr("r", 3)
                 .on("mouseover", function(d) {
                     toolTipdiv.transition()
-                        .duration(100)
+                        .duration(0)
                         .style("opacity", .9);
                     toolTipdiv.html(d.key + ", " + d.value)
-                        .style("left", d3.event.pageX)
-                        .style("top", d3.event.pageY);
+                        .style("left", (d3.event.pageX - 20) + "px")
+                        .style("top", (d3.event.pageY - 30) + "px");
                 })
                 .on("mouseout", function(d) {
                     toolTipdiv.transition()
-                        .duration(100)
+                        .duration(0)
                         .style("opacity", 0);
                 });
 
