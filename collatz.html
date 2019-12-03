@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Nicolas Vera</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Personal site of Nicolas Vera">
+        <meta  name="keywords" content="java javascript d3.js boston hello there person reading this">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        
+        <!-- Style for this page -->
+        <link rel="stylesheet" href="style/style-main.css">
+
+        <!-- W3.js for "include" functionality -->
+        <script src="https://www.w3schools.com/lib/w3.js"></script>
+
+        <!-- D3.js, library for data visualization-->
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+
+        <style>
+        .tooltip {
+          position: absolute;
+          text-align: center;
+          width: 60px;
+          height: 12px;
+          padding: 2px;
+          font: 12px sans-serif;
+          background: lightblue;
+          border: 0px;
+          border-radius: 8px;
+          pointer-events: none;
+        }
+        </style>
+
+    </head>
+    <body>
+
+        <!--INCLUDE NAVBAR-->
+        <div w3-include-html="navbar.html"></div>
+
+        <!-- Main content -->
+        <div class="container">
+
+        <h2 class="text-center">Projects</h2>
+
+        <h4 class="text-center">The Collatz Conjecture</h4>
+        <br>
+
+        <div class="text-center">
+
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <p>
+                        <i>The Collatz conjecture is a conjecture in mathematics that concerns a sequence defined as follows: start with any positive integer n. Then each term is obtained from the previous term as follows: if the previous term is even, the next term is one half the previous term. If the previous term is odd, the next term is 3 times the previous term plus 1. The conjecture is that no matter what value of n, the sequence will always reach 1.</i>
+                    </p>
+                    <p>- <a href="https://en.wikipedia.org/wiki/Collatz_conjecture" target="_blank">Wikipedia</a>
+            </p>
+                    <br>
+                    <p>
+                        If an integer n is taken through the Collatz sequence, it will eventually "peak" a some
+                        maximum value before (but not necessarily immediately before) collapsing to the
+                        sequence 4, 2, 1, 4, 2, 1, ...
+                    </p>
+                    <p>
+                        Here is a JavaScript function that calculates that peak value:
+                    </p>
+                    <br>
+
+                    <pre class="text-left bg-dark text-light"><code>            function getPeak(n) {
+                if (n < 1) { return "Need a positive integer 1 or greater"; }
+                var peak = n;
+
+                while (n > 1) {
+                    if (n % 2 == 0) {
+                        n = n / 2;
+                    } else {
+                        n = (3 * n) + 1;
+                    }
+                    if (n > peak) {
+                        peak = n;
+                    }
+                }
+                return peak;
+            }</code></pre>
+
+            <p>
+                Using the D3.js library, we can plot the peaks and observe patterns emerge naturally.<br>
+                Here, values of n are 1 through 300:
+            </p>
+            
+                </div>
+            </div>
+
+            <br>
+            <div id="svg"></div>
+
+        </div>
+
+    
+        <script>
+
+        //Take positive integer n >= 1 through Collatz sequence and return peak
+        function getPeak(n) {
+            if (n < 1) { return "Need a positive integer 1 or greater"; }
+            var peak = n;
+
+            while (n > 1) {
+                if (n % 2 == 0) {
+                    n = n / 2;
+                } else {
+                    n = (3 * n) + 1;
+                }
+                if (n > peak) {
+                    peak = n;
+                }
+            }
+            return peak;
+        }
+
+        var width = 800;
+        var height = 600;
+
+        //set up SVG
+        var svg = d3.select("#svg").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        svg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#BBBBBB")
+
+
+        //Fill peakData array with each elem in the form {key: n, value: peak]}
+        var peakData = []
+        for (var i = 1; i <= 300; i++) {
+            peakData.push({"key": i, "value": getPeak(i)})
+        }
+
+        var xScale = d3.scaleLinear()
+            .domain([0, d3.max(peakData, function(d) { return d.key; })])
+            .range([50, width - 50]);
+
+        var yScale = d3.scaleLinear()
+            .domain([0, d3.max(peakData, function(d) { return d.value; })])
+            .range([height - 50, 50]);
+
+        //Add x and y axis
+        var xAxis = d3.axisBottom()
+            .scale(xScale);
+        var yAxis = d3.axisLeft()
+            .scale(yScale);
+
+        svg.append("g")
+            .attr("transform", "translate(50, 0)")
+            .call(yAxis)
+
+        svg.append("g")
+            .attr("transform", "translate(0," + (height - 50) + ")")
+            .call(xAxis);
+
+        //Create toolTipdiv for tooltips on data points
+        var toolTipdiv = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        //Append the data points representing each integer and its peak
+        svg.selectAll("dataPoint")
+            .data(peakData)
+            .enter()
+                .append("circle")
+                .attr("cx", function(d) { return xScale(d.key); })
+                .attr("cy", function(d) { return yScale(d.value); })
+                .attr("stroke", "black")
+                .attr("r", 3)
+                .on("mouseover", function(d) {
+                    toolTipdiv.transition()
+                        .duration(100)
+                        .style("opacity", .9);
+                    toolTipdiv.html(d.key + ", " + d.value)
+                        .style("left", d3.event.pageX)
+                        .style("top", d3.event.pageY);
+                })
+                .on("mouseout", function(d) {
+                    toolTipdiv.transition()
+                        .duration(100)
+                        .style("opacity", 0);
+                });
+
+
+        </script>
+
+        <!-- Libraries for responsive functionality: jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        <!--w3.js include HTML-->
+        <script>
+            w3.includeHTML();
+        </script>
+    </body>
+</html>
