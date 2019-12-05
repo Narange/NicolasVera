@@ -64,26 +64,23 @@
                         sequence 4, 2, 1, 4, 2, 1, ...
                     </p>
                     <p>
-                        Here is a JavaScript function that calculates that peak value:
+                        Here is the calculation of that peak value:
                     </p>
                     <br>
 
-                    <pre class="text-left bg-dark text-light"><code>            function getPeak(n) {
-                if (n < 1) { return "Need a positive integer 1 or greater"; }
-                var peak = n;
-
-                while (n > 1) {
-                    if (n % 2 == 0) {
-                        n = n / 2;
-                    } else {
-                        n = (3 * n) + 1;
-                    }
-                    if (n > peak) {
-                        peak = n;
-                    }
-                }
-                return peak;
-            }</code></pre>
+                    <pre class="text-left bg-dark text-light">
+                    <code>    var peak = n;
+                        while (n > 1) {
+                            if (n % 2 == 0) {
+                                n = n / 2;
+                            } else {
+                                n = (3 * n) + 1;
+                            }
+                            if (n > peak) {
+                                peak = n;
+                            }
+                        }
+                        return peak;</code></pre>
 
             <p>
                 Using the D3.js library, we can plot the peaks and observe patterns emerge naturally.<br>
