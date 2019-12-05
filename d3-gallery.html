@@ -121,11 +121,11 @@
 
 
         <h4 class="text-center">Node Graph Propagation</h4>
-        <p class="text-center">Node graph using "force" layout. Click "Sample" to generate (another) random graph.<br> Click "Propagate" to spread red nodes with probability 0.5.</p>
+        <p class="text-center">Node graph using "force" layout. Click "Sample" to generate (another) random graph.<br> Click "Infect" to spread red nodes.</p>
 
         <div class="text-center" style="margin-bottom: 3px;">
             <button id="sample">Sample</button>
-            <button id="propagate">Propagate</button>
+            <button id="propagate">Infect</button>
         </div>
     
         <div id="svgForce" class="text-center"></div>
@@ -307,7 +307,7 @@
                 var node = graph.nodes[i];
     
                 node.neighbors.forEach(function (neighbor) {
-                    if (graph.nodes[neighbor].infected && Math.random() < 0.5) {
+                    if (graph.nodes[neighbor].infected) {
                         condemnedNodes.push(i);
                     }
                 });

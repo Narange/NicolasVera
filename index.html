@@ -88,14 +88,14 @@
     
             //draw the bubbles
             for(var i = 0; i < 50; i++){
-                var circles = svgSoda.append("circle")
+                svgSoda.append("circle")
                     .style("fill", sodaFill)
                     .style("stroke", sodaStroke)
-                    .style("stroke-width", 2)
+                    .style("stroke-width", 1)
                     .attr("cx", Math.random()*width)
                     .attr("cy", Math.random()*height)
-                    .attr("r", Math.random()*20+2)
-                    .attr("opacity", .5);
+                    .attr("r", Math.random()*15+2)
+                    .attr("opacity", .4);
             }
         }
             window.setInterval(drawCircles, 80);
